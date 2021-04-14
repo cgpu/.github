@@ -1,0 +1,21 @@
+name: lintr
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+    paths:
+    - '**.R'
+
+jobs:
+  linux:
+    if: contains(github.event.head_commit.message, '[lint skip]') == false
+    strategy:
+      matrix:
+    runs-on: ubuntu-latest
+    container: cgpu/lintr
+    steps:
+    - uses: actions/checkout@v2.3.4
+    - name: Running lintr
+      run: |
+        Rscript -e "lintr::lint_dir('./Rmdies/R')"
+      shell:
+        bash

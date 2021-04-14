@@ -1,0 +1,37 @@
+name: hadolint action
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - '.'
+    - '.docker/*'
+    - '.containers/*'
+    - '.containers/**/*'
+  pull_request_target:
+    branches:
+      - master
+    types:
+      - opened
+      - closed
+      - labeled
+      - unlabeled
+      - edited
+    paths:
+    - '.'
+    - '.docker/*'
+    - '.containers/*'
+    - '.containers/**/*'
+
+jobs:
+  hadolintOnPr:
+    name: hadolint on pr
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: hadolint on pr
+      uses: burdzwastaken/hadolint-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        HADOLINT_ACTION_DOCKERFILE_FOLDER: .docker

@@ -1,0 +1,24 @@
+# This is a basic workflow from the Actions template
+
+name: export-conda-env
+
+# Controls when the action will run (here whenever README.md is modified in the remote repo)
+# 
+on:
+  push:
+    paths:
+    - 'README.md'
+    - '.github/workflows/*.yml'
+    - '.github/workflows/*.yaml'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Check container
+        uses: docker://cgpu/staries:1.0
+        with:
+          args: 'conda env export --name base --no-builds'
+
